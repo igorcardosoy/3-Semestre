@@ -1,0 +1,7 @@
+import view.LoginSystem;
+
+public class Main {
+  public static void main(String[] args) {
+    LoginSystem.Run();
+  }
+}
