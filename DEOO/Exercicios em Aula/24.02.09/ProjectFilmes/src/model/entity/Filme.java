@@ -1,8 +1,6 @@
-package model;
+package model.entity;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Filme {

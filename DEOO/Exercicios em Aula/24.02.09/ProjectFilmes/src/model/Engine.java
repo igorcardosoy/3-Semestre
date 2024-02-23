@@ -1,8 +1,10 @@
 package model;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import model.Filme;
+
+import model.entity.Ator;
+import model.entity.Diretor;
+import model.entity.Filme;
 
 public class Engine {
 

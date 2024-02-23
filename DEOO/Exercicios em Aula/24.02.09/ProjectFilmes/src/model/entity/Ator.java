@@ -1,4 +1,4 @@
-package model;
+package model.entity;
 
 public class Ator extends Pessoa{
   private int anoNascimento;

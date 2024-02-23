@@ -1,4 +1,4 @@
-package model;
+package model.entity;
 
 public class Diretor extends Pessoa{
     public Diretor(String nome){
