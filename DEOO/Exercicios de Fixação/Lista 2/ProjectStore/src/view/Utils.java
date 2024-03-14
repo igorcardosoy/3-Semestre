@@ -100,6 +100,7 @@ public class Utils {
       sb.append("------------------------------------------------------------------------\n");
     }
 
+
     JTextArea textArea = new JTextArea(sb.toString());
     textArea.setEditable(false);
     textArea.setLineWrap(true);

@@ -2,6 +2,8 @@ package dto;
 
 import model.entity.Product;
 
+import java.util.Vector;
+
 public class ProductDto {
   public String name;
   public String description;

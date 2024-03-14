@@ -68,7 +68,7 @@ public class UserDaoImple implements UserDao{
 
   @Override
   public void updatePassword(String username, String newPassword) {
-    int index = 0;
+     int index = 0;
 
     for (User u : userList){
       if (u.getUsername().equals(username)){

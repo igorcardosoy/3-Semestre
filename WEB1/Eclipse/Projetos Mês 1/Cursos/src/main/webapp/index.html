@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+    	<meta charset="ISO-8859-1">
+    	<title>Cursos</title>
+    	<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+   		<section class="container">
+	        <h1>Cadastro na Lista de Notícias</h1>
+	
+	        <form action="cursos" method="post">
+	            <label for="fullName">Nome completo:</label>
+	            <input type="text" name="fullName" id="fullName" placeholder="Nome">
+	
+	            <label for="email">E-mail:</label>
+	            <input type="email" name="email" id="email" required="required" placeholder="E-mail">
+	            
+	            <section id="emails">
+	            	
+	            </section>
+	            
+	            <section id="buttons">
+		            <button type="button" id="addEmail">Adicionar e-mail</button>
+		            <button type="button" id="removeEmail">Remover e-mail</button>
+	            </section>
+	
+	            <fieldset>
+	                <legend>Seus interesses em cursos de extensão são:</legend>
+	                <input type="checkbox" name="options" id="bootstrap" value="Curso de Bootstrap">
+	                <label for="bootstrap">Curso de Bootstrap</label>
+	
+	                <input type="checkbox" name="options" id="designPaterns" value="Curso de animacao em CSS 3">
+	                <label for="designPaterns">Curso de animação em CSS 3</label>
+	
+	                <input type="checkbox" name="options" id="css" value="Curso de Design Patterns">
+	                <label for="css">Curso de Design Patterns</label>
+	            </fieldset>
+	
+	            <br>
+	
+	            <input type="submit" id="submit" value="Cadastrar">
+	        </form>
+    	</section>
+	</body>
+</html>
