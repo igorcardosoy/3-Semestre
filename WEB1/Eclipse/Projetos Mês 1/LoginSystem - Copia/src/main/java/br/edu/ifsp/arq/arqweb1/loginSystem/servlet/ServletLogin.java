@@ -12,12 +12,12 @@ import br.edu.ifsp.arq.arqweb1.loginSystem.model.dao.*;
 import br.edu.ifsp.arq.arqweb1.loginSystem.model.entities.User;
 
 @WebServlet("/ServletLogin")
-public class LoginServlet extends HttpServlet {
+public class ServletLogin extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private UserDao userDao;
 
-	public LoginServlet() {
+	public ServletLogin() {
 		super();
 		userDao = UserDaoImple.getInstance();
 	}
