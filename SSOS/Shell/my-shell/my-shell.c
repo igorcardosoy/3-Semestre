@@ -6,17 +6,18 @@
 #include <time.h>
 #include "queue.h"
 
-#define BUFFER_SIZE 300
+#define BUFFER_SIZE 100
+#define COMMAND_SIZE 200
+#define ARGS_SIZE 20
 
 void type_prompt();
-void read_command(char*, char*);
-void intern_commands(char*, char*);
+void read_command(char*, char**);
+void intern_commands(char**);
 void history_command(Queue, char*);
-void broke_string(char*, char*);
+void broke_string(char*, char**);
 char* get_username();
 char* get_hostname();
 struct tm* get_time();
-char** get_path(char* command, char* parameters);
 
 
 int main() {
@@ -25,10 +26,10 @@ int main() {
 
     init(&history);
 
-    do {
+    while (!exit) {
 
-        char* command = malloc(sizeof(char) * BUFFER_SIZE);
-        char* parameters = malloc(sizeof(char) * BUFFER_SIZE);
+        char command[COMMAND_SIZE];
+        char* parameters[ARGS_SIZE];
         int status = 0;
 
         type_prompt();
@@ -36,21 +37,23 @@ int main() {
 
         enqueue(history, command);
 
-        if (!strcmp(command, "exit\n")) { exit = true; }
+        if (!strcmp(command, "exit")) { exit = true;}
         if (!exit) {
             if (!strcmp(command, "history\n")) { history_command(history, command); }
-            if (!strcmp(command, "c")) { intern_commands(command, parameters); }
+
+            intern_commands(parameters);
+
             if (fork() != 0) {
                 waitpid(-1, &status, 0);
             } else {
-                char* args[] = {"/bin/ls", NULL};
-                char* nullArg[] = {NULL};
-                char cmd[] = "ls";
-                execve(cmd, args, nullArg);
+                char* env[] = { "TERM=xterm", NULL };
+                if (execve(parameters[0], parameters, env) == -1) {
+                    _exit(1);
+                }
             }
         }
 
-    } while (!exit);
+    }
 
     return 0;
 }
@@ -66,8 +69,9 @@ void history_command(Queue history, char* command) {
     }
 
     char* string = malloc(sizeof(char) * BUFFER_SIZE);
-    char* nothing;
-    read_command(string, nothing);
+
+    fgets(string, BUFFER_SIZE, stdin);
+
     string = strtok(string, "!");
 
     int index = atoi(string);
@@ -83,17 +87,6 @@ void history_command(Queue history, char* command) {
 
     enqueue(history, command);
 }
-
-char** get_path(char* command, char* parameters) {
-    char* path = malloc(sizeof(char) * 100);
-    strcpy(path, "/bin/");
-    strcat(path, command);
-    char** args = malloc(sizeof(char*) * 3);
-    args[0] = path;
-    args[1] = parameters;
-    args[2] = NULL;
-    return args;
-} 
 
 void type_prompt() {
     struct tm* time = get_time();
@@ -118,19 +111,47 @@ char* get_hostname() {
     return hostname;
 }
 
-void intern_commands(char* command, char* parameters) {
-    printf("oi");
+void intern_commands(char* parameters[]) {
+    if (!strcmp(parameters[0], "cd")) {
+        if (parameters[1] == NULL) {
+            chdir(getenv("HOME"));
+        } else {
+            chdir(parameters[1]);
+        }
+    } 
 }
 
-
-void read_command(char* command, char* parameters) {
+void read_command(char* command, char* parameters[]) {
     fgets(command, BUFFER_SIZE, stdin);
     broke_string(command, parameters);
 }
 
-void broke_string(char* command, char* parameters) {
-    char* temp = strtok(command, " ");
-    strcpy(command, temp);
-    temp = strtok(NULL, " ");
-    strcpy(parameters, temp);
+void broke_string(char* command, char* parameters[]) {
+    char command_bin[BUFFER_SIZE] = "/bin/";
+    char command_to_execute[BUFFER_SIZE];
+
+    strcpy(command_to_execute, command_bin);
+
+    command[strlen(command) - 1] = '\0';
+
+    char* token;
+    token = strtok(command, " ");
+    strcpy(command, token);
+
+    int i = 1;
+    while (token != NULL) {
+        token = strtok(NULL, " ");
+        if (token != NULL) {
+            parameters[i] = malloc(sizeof(char) * BUFFER_SIZE);
+            snprintf(parameters[i], BUFFER_SIZE, "%s", token);
+        }
+
+        i++;
+    }
+
+    strcat(command_to_execute, command);
+
+    parameters[0] = malloc(sizeof(char) * BUFFER_SIZE);
+    snprintf(parameters[0], sizeof(command_to_execute), "%s", command_to_execute);
+    parameters[i] = NULL;
 }
