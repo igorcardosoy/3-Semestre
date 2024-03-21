@@ -12,7 +12,8 @@
 
 void type_prompt();
 void read_command(char*, char**);
-void intern_commands(char**);
+void internal_commands(char**);
+void external_commands(char**);
 void history_command(Queue, char*);
 void broke_string(char*, char**);
 char* get_username();
@@ -37,20 +38,14 @@ int main() {
 
         enqueue(history, command);
 
-        if (!strcmp(command, "exit")) { exit = true;}
+        if (!strcmp(command, "exit")) { exit = true; }
         if (!exit) {
+            
             if (!strcmp(command, "history\n")) { history_command(history, command); }
 
-            intern_commands(parameters);
+            internal_commands(parameters);
 
-            if (fork() != 0) {
-                waitpid(-1, &status, 0);
-            } else {
-                char* env[] = { "TERM=xterm", NULL };
-                if (execve(parameters[0], parameters, env) == -1) {
-                    _exit(1);
-                }
-            }
+            external_commands(parameters);
         }
 
     }
@@ -111,14 +106,27 @@ char* get_hostname() {
     return hostname;
 }
 
-void intern_commands(char* parameters[]) {
+void internal_commands(char* parameters[]) {
     if (!strcmp(parameters[0], "cd")) {
         if (parameters[1] == NULL) {
             chdir(getenv("HOME"));
         } else {
             chdir(parameters[1]);
         }
-    } 
+    }
+}
+
+void external_commands(char* parameters[]) {
+    int status;
+
+    if (fork() != 0) {
+        waitpid(-1, &status, 0);
+    } else {
+        char* env[] = { "TERM=xterm", NULL };
+        if (execve(parameters[0], parameters, env) == -1) {
+            _exit(1);
+        }
+    }
 }
 
 void read_command(char* command, char* parameters[]) {
