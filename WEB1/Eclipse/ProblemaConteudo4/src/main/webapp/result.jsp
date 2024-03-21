@@ -28,11 +28,8 @@
 					</tr>
 
 					<c:forEach var="person" items="${list}">
-					
-						<varStatus="count">
-					
 						<tr>
-							<td>${count.index + 1}</td>
+							<td>${count.count + 1}</td>
 							<td>${person.name}</td>
 							<td>${person.cpf}</td>
 							<td>${person.email}</td>
