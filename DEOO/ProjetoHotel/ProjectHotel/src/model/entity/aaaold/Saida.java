@@ -1,14 +1,8 @@
-package model.entity.old;
+package model.entity.aaaold;
 
-import model.acomodacoes.Acomodacao;
-import model.acomodacoes.Reserva;
-import model.acomodacoes.Acomodado;
 import model.pessoas.Hospede;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static view.Hotel.formatterDataHora;
 

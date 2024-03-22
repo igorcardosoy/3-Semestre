@@ -1,6 +1,6 @@
-package model.entity.old.pessoas;
+package model.entity.aaaold.pessoas;
 
-import model.entity.old.Indentificacao;
+import model.entity.aaaold.Indentificacao;
 import model.enums.Estados;
 import model.enums.TipoDoc;
 import model.enums.TipoItens;

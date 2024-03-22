@@ -6,7 +6,7 @@ import model.pessoas.Hospede;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import model.entity.old.CartaoCredito;
+import model.entity.aaaold.CartaoCredito;
 
 import static view.Hotel.*;
 

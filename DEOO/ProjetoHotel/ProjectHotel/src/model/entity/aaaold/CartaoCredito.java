@@ -1,4 +1,4 @@
-package model.entity.old;
+package model.entity.aaaold;
 
 /**
  * Definição da classe CartaoCredito, em que sera armazenará os dados

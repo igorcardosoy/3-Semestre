@@ -1,6 +1,6 @@
 package model.acomodacoes;
 
-import model.entity.old.CartaoCredito;
+import model.entity.aaaold.CartaoCredito;
 import model.pessoas.Funcionario;
 import model.pessoas.Hospede;
 import java.time.LocalDateTime;
