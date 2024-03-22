@@ -16,16 +16,21 @@ void internal_commands(char**);
 void external_commands(char**);
 void history_command(Queue, char*);
 void broke_string(char*, char**);
+void clean_buffer(char*, char**);
+char* get_directory();
 char* get_username();
 char* get_hostname();
 struct tm* get_time();
 
 
-int main() {
+int main()
+{
     Queue history;
     bool exit = false;
 
     init(&history);
+
+    system("clear");
 
     while (!exit) {
 
@@ -40,13 +45,19 @@ int main() {
 
         if (!strcmp(command, "exit")) { exit = true; }
         if (!exit) {
-            
-            if (!strcmp(command, "history\n")) { history_command(history, command); }
-            broke_string(command, parameters);
+
+            if (!strcmp(command, "history\n")) {
+                history_command(history, command);
+                broke_string(command, parameters);
+            }
 
             internal_commands(parameters);
 
+            get_directory();
+
             external_commands(parameters);
+
+            clean_buffer(command, parameters);
         }
 
     }
@@ -54,7 +65,17 @@ int main() {
     return 0;
 }
 
-void history_command(Queue history, char* command) {
+void clean_buffer(char* command, char* parameters[])
+{
+    command = NULL;
+
+    for (int i = 0; parameters[i] != NULL; i++) {
+        parameters[i] = NULL;
+    }
+}
+
+void history_command(Queue history, char* command)
+{
     int queue_size = size(history);
 
     for (int i = 0; i < queue_size; i++) {
@@ -84,30 +105,48 @@ void history_command(Queue history, char* command) {
     enqueue(history, command);
 }
 
-void type_prompt() {
+void type_prompt()
+{
     struct tm* time = get_time();
-    printf("%s@%s[%02d:%02d:%02d]$ ", get_username(), get_hostname(), time->tm_hour, time->tm_min, time->tm_sec);
+    printf("%s@%s[%02d:%02d:%02d] caminho $ ", get_username(), get_hostname(), time->tm_hour, time->tm_min, time->tm_sec);
 }
 
-struct tm* get_time() {
+char* get_directory()
+{
+    char * buf;
+    char * cwd;
+    buf = (char *)malloc(sizeof(char) * 1024);
+
+    cwd = getcwd(buf, 1024);
+
+    
+
+    return 0;
+}
+
+struct tm* get_time()
+{
     time_t segundos;
     time(&segundos);
 
     return localtime(&segundos);
 }
 
-char* get_username() {
+char* get_username()
+{
     char* username = getenv("USER");
     return username;
 }
 
-char* get_hostname() {
+char* get_hostname()
+{
     char* hostname = malloc(sizeof(char) * 100);
     gethostname(hostname, 100);
     return hostname;
 }
 
-void internal_commands(char* parameters[]) {
+void internal_commands(char* parameters[])
+{
     if (!strcmp(parameters[0], "cd")) {
         if (parameters[1] == NULL) {
             chdir(getenv("HOME"));
@@ -117,7 +156,8 @@ void internal_commands(char* parameters[]) {
     }
 }
 
-void external_commands(char* parameters[]) {
+void external_commands(char* parameters[])
+{
     int status;
 
     if (fork() != 0) {
@@ -130,18 +170,19 @@ void external_commands(char* parameters[]) {
     }
 }
 
-void read_command(char* command, char* parameters[]) {
+void read_command(char* command, char* parameters[])
+{
     fgets(command, BUFFER_SIZE, stdin);
     broke_string(command, parameters);
 }
 
-void broke_string(char* command, char* parameters[]) {
-    char command_to_execute[BUFFER_SIZE]
+void broke_string(char* command, char* parameters[])
+{
+    char* token;
 
     command[strlen(command) - 1] = '\0';
-
-    char* token;
     token = strtok(command, " ");
+
     strcpy(command, token);
 
     int i = 1;
@@ -155,9 +196,8 @@ void broke_string(char* command, char* parameters[]) {
         i++;
     }
 
-    strcat(command_to_execute, command);
-
     parameters[0] = malloc(sizeof(char) * BUFFER_SIZE);
-    snprintf(parameters[0], sizeof(command_to_execute), "%s", command_to_execute);
+    snprintf(parameters[0], sizeof(command), "%s", command);
+
     parameters[i] = NULL;
 }
