@@ -9,7 +9,6 @@
 #define BUFFER_SIZE 100
 #define COMMAND_SIZE 200
 #define ARGS_SIZE 20
-#define A
 
 struct alias_commands {
     char* command;
@@ -24,6 +23,7 @@ void external_commands(char**);
 void history_command(Queue, char*);
 void broke_string(char*, char**);
 void clean_buffer(char*, char**);
+void assign(char**);
 char* get_directory();
 char* get_username();
 char* get_hostname();
@@ -142,15 +142,19 @@ char* get_hostname() {
     return hostname;
 }
 
+void assign(char* parameters[]){
+
+}
+
 void internal_commands(char* command, char* parameters[], Queue history) {
-    if (!strcmp(command, "exit")) {
-        _exit(0);
-    } else if (!strcmp(parameters[0], "alias")) {
+    if (!strcmp(parameters[0], "alias")) {
         assign(parameters);
     } else if (!strcmp(command, "history")) {
         clean_buffer(command, parameters);
         history_command(history, command);
         broke_string(command, parameters);
+    } else if (!strcmp(command, "exit")) {
+        _exit(0);
     } else if (!strcmp(parameters[0], "cd")) {
         if (parameters[1] == NULL) {
             chdir(getenv("HOME"));
