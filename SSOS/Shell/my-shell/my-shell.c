@@ -9,10 +9,17 @@
 #define BUFFER_SIZE 100
 #define COMMAND_SIZE 200
 #define ARGS_SIZE 20
+#define A
+
+struct alias_commands {
+    char* command;
+    char* name;
+};
+
 
 void type_prompt();
 void read_command(char*, char**);
-void internal_commands(char**);
+void internal_commands(char*, char**, Queue);
 void external_commands(char**);
 void history_command(Queue, char*);
 void broke_string(char*, char**);
@@ -23,18 +30,16 @@ char* get_hostname();
 struct tm* get_time();
 
 
-int main()
-{
+int main() {
     Queue history;
-    bool exit = false;
+
 
     init(&history);
 
     system("clear");
 
-    while (!exit) {
-
-        char command[COMMAND_SIZE];
+    while (true) {
+        char* command = malloc(sizeof(char) * COMMAND_SIZE);
         char* parameters[ARGS_SIZE];
         int status = 0;
 
@@ -43,30 +48,16 @@ int main()
 
         enqueue(history, command);
 
-        if (!strcmp(command, "exit")) { exit = true; }
-        if (!exit) {
+        internal_commands(command, parameters, history);
+        external_commands(parameters);
 
-            if (!strcmp(command, "history\n")) {
-                history_command(history, command);
-                broke_string(command, parameters);
-            }
-
-            internal_commands(parameters);
-
-            get_directory();
-
-            external_commands(parameters);
-
-            clean_buffer(command, parameters);
-        }
-
+        clean_buffer(command, parameters);
     }
 
     return 0;
 }
 
-void clean_buffer(char* command, char* parameters[])
-{
+void clean_buffer(char* command, char* parameters[]) {
     command = NULL;
 
     for (int i = 0; parameters[i] != NULL; i++) {
@@ -74,8 +65,7 @@ void clean_buffer(char* command, char* parameters[])
     }
 }
 
-void history_command(Queue history, char* command)
-{
+void history_command(Queue history, char* command) {
     int queue_size = size(history);
 
     for (int i = 0; i < queue_size; i++) {
@@ -90,74 +80,89 @@ void history_command(Queue history, char* command)
     fgets(string, BUFFER_SIZE, stdin);
 
     string = strtok(string, "!");
-
     int index = atoi(string);
 
-    for (int i = 0; i < queue_size; i++) {
+    for (int i = 0; i < queue_size && i != index; i++) {
         char* temp_string;
         temp_string = dequeue(history);
         enqueue(history, temp_string);
 
-        if (i == index - 1)
-            command = temp_string;
+        if (i == index - 1) {
+            snprintf(command, BUFFER_SIZE, "%s", temp_string);
+        }
     }
 
     enqueue(history, command);
 }
 
-void type_prompt()
-{
+void type_prompt() {
     struct tm* time = get_time();
-    printf("%s@%s[%02d:%02d:%02d] caminho $ ", get_username(), get_hostname(), time->tm_hour, time->tm_min, time->tm_sec);
+    printf("%s@%s[%02d:%02d:%02d] /%s $ ", get_username(), get_hostname(), time->tm_hour, time->tm_min, time->tm_sec, get_directory());
 }
 
-char* get_directory()
-{
-    char * buf;
-    char * cwd;
-    buf = (char *)malloc(sizeof(char) * 1024);
+char* get_directory() {
+    char* buf = malloc(sizeof(char) * 1024);
+    char* directory = malloc(sizeof(char) * 1024);
+    char* cwd;
+    char* token;
 
     cwd = getcwd(buf, 1024);
+    token = strtok(cwd, "/");
 
-    
+    strcpy(cwd, token);
 
-    return 0;
+    int i = 0;
+    while (token != NULL) {
+        token = strtok(NULL, "/");
+
+        if (token != NULL)
+            snprintf(directory, BUFFER_SIZE, "%s", token);
+
+        i++;
+    }
+
+    return directory;
 }
 
-struct tm* get_time()
-{
+struct tm* get_time() {
     time_t segundos;
     time(&segundos);
 
     return localtime(&segundos);
 }
 
-char* get_username()
-{
+char* get_username() {
     char* username = getenv("USER");
     return username;
 }
 
-char* get_hostname()
-{
+char* get_hostname() {
     char* hostname = malloc(sizeof(char) * 100);
     gethostname(hostname, 100);
     return hostname;
 }
 
-void internal_commands(char* parameters[])
-{
-    if (!strcmp(parameters[0], "cd")) {
+void internal_commands(char* command, char* parameters[], Queue history) {
+    if (!strcmp(command, "exit")) {
+        _exit(0);
+    } else if (!strcmp(parameters[0], "alias")) {
+        assign(parameters);
+    } else if (!strcmp(command, "history")) {
+        clean_buffer(command, parameters);
+        history_command(history, command);
+        broke_string(command, parameters);
+    } else if (!strcmp(parameters[0], "cd")) {
         if (parameters[1] == NULL) {
             chdir(getenv("HOME"));
         } else {
             chdir(parameters[1]);
         }
+    } else if (!strcmp(parameters[0], "cls") || !strcmp(parameters[0], "clear")) {
+        system("clear");
     }
 }
 
-void external_commands(char* parameters[])
-{
+void external_commands(char* parameters[]) {
     int status;
 
     if (fork() != 0) {
@@ -170,17 +175,17 @@ void external_commands(char* parameters[])
     }
 }
 
-void read_command(char* command, char* parameters[])
-{
+void read_command(char* command, char* parameters[]) {
     fgets(command, BUFFER_SIZE, stdin);
     broke_string(command, parameters);
 }
 
-void broke_string(char* command, char* parameters[])
-{
+void broke_string(char* command, char* parameters[]) {
     char* token;
 
-    command[strlen(command) - 1] = '\0';
+    if (command[strlen(command) - 1] == '\n')
+        command[strlen(command) - 1] = '\0';
+
     token = strtok(command, " ");
 
     strcpy(command, token);
