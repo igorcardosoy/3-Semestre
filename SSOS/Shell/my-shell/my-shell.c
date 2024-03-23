@@ -19,7 +19,7 @@ struct alias_commands {
 void type_prompt();
 void read_command(char*, char**);
 void internal_commands(char*, char**, Queue);
-void external_commands(char**);
+void external_commands(char*, char**);
 void history_command(Queue, char*);
 void broke_string(char*, char**);
 void clean_buffer(char*, char**);
@@ -49,9 +49,7 @@ int main() {
         enqueue(history, command);
 
         internal_commands(command, parameters, history);
-        external_commands(parameters);
-
-        clean_buffer(command, parameters);
+        external_commands(command, parameters);
     }
 
     return 0;
@@ -147,35 +145,43 @@ void assign(char* parameters[]){
 }
 
 void internal_commands(char* command, char* parameters[], Queue history) {
-    if (!strcmp(parameters[0], "alias")) {
+    if (!strcmp(command, "alias")) {
         assign(parameters);
+
     } else if (!strcmp(command, "history")) {
         clean_buffer(command, parameters);
         history_command(history, command);
         broke_string(command, parameters);
+
     } else if (!strcmp(command, "exit")) {
         _exit(0);
-    } else if (!strcmp(parameters[0], "cd")) {
+
+    } else if (!strcmp(command, "cd")) {
         if (parameters[1] == NULL) {
             chdir(getenv("HOME"));
+
         } else {
             chdir(parameters[1]);
         }
-    } else if (!strcmp(parameters[0], "cls") || !strcmp(parameters[0], "clear")) {
+        clean_buffer(command, parameters);
+
+    } else if (!strcmp(command, "cls") || !strcmp(command, "clear")) {
         system("clear");
+        clean_buffer(command, parameters);
     }
 }
 
-void external_commands(char* parameters[]) {
+void external_commands(char* command, char* parameters[]) {
     int status;
 
     if (fork() != 0) {
         waitpid(-1, &status, 0);
     } else {
         if (execvp(parameters[0], parameters) == -1) {
+            clean_buffer(command, parameters);
+            perror("execvp");
             _exit(1);
         }
-        perror("execvp");
     }
 }
 
@@ -208,5 +214,5 @@ void broke_string(char* command, char* parameters[]) {
     parameters[0] = malloc(sizeof(char) * BUFFER_SIZE);
     snprintf(parameters[0], sizeof(command), "%s", command);
 
-    parameters[i] = NULL;
+    parameters[i-1] = NULL;
 }
