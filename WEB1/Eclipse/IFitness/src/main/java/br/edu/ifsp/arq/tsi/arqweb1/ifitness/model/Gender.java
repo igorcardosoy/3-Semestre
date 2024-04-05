@@ -2,7 +2,7 @@ package br.edu.ifsp.arq.tsi.arqweb1.ifitness.model;
 
 public enum Gender {
 	MALE("Masculino"),
-	FAMALE("Feminino"),
+	FEMALE("Feminino"),
 	OTHER("Outro"),
 	NOT_INFORMED("Prefiro não informar");
 	

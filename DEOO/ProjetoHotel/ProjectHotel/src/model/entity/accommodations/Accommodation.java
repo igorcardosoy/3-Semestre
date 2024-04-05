@@ -9,9 +9,9 @@ import java.util.List;
 
 public class Accommodation {
 
-    private int number;
-    private int floor;
-    private TypesOfAccommodation type;
+    private final int number;
+    private final int floor;
+    private final TypesOfAccommodation type;
     private boolean isOccupied;
 
 
@@ -25,11 +25,11 @@ public class Accommodation {
     private double penaltyPrice;
 
 
-    public Accommodation(int number, int floor, TypesOfAccommodation type, boolean isOccupied) {
+    public Accommodation(int number, int floor, TypesOfAccommodation type) {
         this.number = number;
         this.floor = floor;
         this.type = type;
-        this.isOccupied = isOccupied;
+        this.isOccupied = false;
     }
 
     public Accommodation(Accommodation accommodation) {
@@ -50,6 +50,11 @@ public class Accommodation {
     }
 
     public Accommodation
+
+    public void occupyAccommodation() {
+        isReserved = false;
+        this.isOccupied = true;
+    }
 
     public int getNumber() {
         return number;

@@ -8,12 +8,22 @@ public class User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private long id;
+	private Long id;
 	private String name;
 	private String email;
 	private String password;
+	private String profilePicture;
 	private LocalDate birthDate;
 	private Gender gender;
+	
+	public User(String name, String email, String password, String profilePicture, LocalDate birthDate, Gender gender) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.profilePicture = profilePicture;
+		this.birthDate = birthDate;
+		this.gender = gender;
+	}
 	
 	public long getId() {
 		return id;
@@ -45,6 +55,14 @@ public class User implements Serializable {
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+	
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
 	}
 	
 	public LocalDate getBirthDate() {
