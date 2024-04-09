@@ -94,11 +94,11 @@
 					</div>
 					
 					<div class="mb-2">
-						<label for="profilePicture">Foto de perfil</label> <input
-							type="text" name="profilePicture" id="profilePicture"
-							class="form-control" maxlength="120"> 
-							<span id="errorAlert-4"></span>
-					</div>
+                        <label for="profilePictureFile">Foto de perfil</label> <input
+                            type="file" name="profilePictureFile" id="profilePictureFile"
+                            class="form-control" accept="image/*"> 
+                            <span id="errorAlert-4"></span>
+                    </div>
 
 					<div class="mb-2">
 						<label for="dateOfBirth">Data de nascimento*</label> <input

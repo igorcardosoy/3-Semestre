@@ -1,4 +1,4 @@
-package br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user;
+package br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.activity;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,36 +9,31 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.Activity;
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.User;
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.LocalDateTypeAdapter;
 
-public final class UserWriter {
+public final class ActivityWriter {
 
-	private UserWriter() {
+	private ActivityWriter() {
 
 	}
 
-	public static final Boolean write(User user) {
-		List<User> users = UserReader.read();
+	public static final Boolean write(Activity activity) {
+		List<Activity> activities = ActivityReader.read();
 		Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter()).create();
-		String path = UserReader.PATH;
+		String path = ActivityReader.PATH;
 
-		if (users == null) {
-			users = new ArrayList<User>();
-			user.setId(1L);
+		if (activities == null) {
+			activities = new ArrayList<Activity>();
+			activity.setId(1L);
 		} else {
-			for (User u : users) {
-				if (u.getEmail().equals(user.getEmail())) {
-					return false;
-				}
-			}
-			
-			user.setId(users.get(users.size() - 1).getId() + 1L);
+			activity.setId(activities.get(activities.size() - 1).getId() + 1L);
 		}
 
-		users.add(user);
+		activities.add(activity);
 		
-		String json = gson.toJson(users);
+		String json = gson.toJson(activities);
 		
 		try {
             FileWriter fileWriter = new FileWriter(path);

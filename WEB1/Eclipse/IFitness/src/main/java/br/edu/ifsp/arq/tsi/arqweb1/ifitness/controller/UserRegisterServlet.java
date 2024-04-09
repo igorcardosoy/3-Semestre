@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.Gender;
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.User;
-import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user.PasswordEncrypt;
+import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user.Encryptor;
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user.UserWriter;
 
 @WebServlet("/userRegister")
@@ -29,11 +29,13 @@ public class UserRegisterServlet extends HttpServlet {
 		String name = req.getParameter("name");
 		String email = req.getParameter("email");
 		String password = req.getParameter("password");
-		String profilePicture = req.getParameter("profilePicture");
+		var profilePictureFile = req.getParameter("profilePictureFile");
 		String birthDate = req.getParameter("dateOfBirth");
 		String gender = req.getParameter("gender");
+		
+		System.out.println("Profile Picture: " + profilePictureFile.getClass());
 
-		User user = new User(name, email, PasswordEncrypt.encrypt(password), profilePicture, LocalDate.parse(birthDate), Gender.valueOf(gender));
+		User user = new User(name, email, Encryptor.encrypt(password), LocalDate.parse(birthDate), Gender.valueOf(gender));
 
 		RequestDispatcher dispatcher = null;
 

@@ -1,4 +1,4 @@
-package br.edu.ifsp.arqweb1.ifitness.model.util.users;
+package br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util;
 
 import java.lang.reflect.Type;
 import java.time.LocalDate;
@@ -14,17 +14,16 @@ import com.google.gson.JsonSerializer;
 
 public class LocalDateTypeAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate>{
 	
-	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd");
+	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	@Override
 	public JsonElement serialize(LocalDate date, Type type, JsonSerializationContext context){
-		return new JsonPrimitive(date.format(formatter));
+		return new JsonPrimitive(date.format(dateFormatter));
 	}
 
 	@Override
 	public LocalDate deserialize(JsonElement json, Type type, JsonDeserializationContext context)
 			throws JsonParseException {
-		return LocalDate.parse(json.getAsString(), formatter);
+		return LocalDate.parse(json.getAsString(), dateFormatter);
 	}
-
 }

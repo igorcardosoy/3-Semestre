@@ -9,11 +9,11 @@ public class UserLogin {
 	private UserLogin() {}
 
 	public static User login(String email, String password) throws UserNotFoundException {
-		List<User> users = UsersReader.read();
+		List<User> users = UserReader.read();
 
 		if (users != null) {
 			for (User user : users) {
-				if (user.getEmail().equals(email) && user.getPassword().equals(PasswordEncrypt.encrypt(password))) {
+				if (user.getEmail().equals(email) && user.getPassword().equals(Encryptor.encrypt(password))) {
 					return user;
 				}
 			}

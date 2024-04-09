@@ -4,9 +4,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public final class PasswordEncrypt {
+public final class Encryptor {
 
-	private PasswordEncrypt() {}
+	private Encryptor() {}
 
 	public static String encrypt(String password) {
 		String encryptedPassword = null;
