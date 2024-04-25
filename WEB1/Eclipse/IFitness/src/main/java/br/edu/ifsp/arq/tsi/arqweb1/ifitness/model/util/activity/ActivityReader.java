@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.Activity;
+import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.User;
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.LocalDateTypeAdapter;
 
 public final class ActivityReader {
@@ -33,6 +34,21 @@ public final class ActivityReader {
 		}
 
 		return activities;
+	}
+	
+	public static List<Activity> readByUser(User user) {
+		List<Activity> activities = read();
+		List<Activity> userActivities = new ArrayList<Activity>();
+
+		if (activities != null) {
+			for (Activity activity : activities) {
+				if (activity.getUser().getId() == (user.getId())) {
+					userActivities.add(activity);
+				}
+			}
+		}
+		
+		return userActivities;
 	}
 
 }

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.User;
-import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user.Encryptor;
+import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.Encryptor;
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user.UserLogin;
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user.UserNotFoundException;
 
@@ -19,7 +19,8 @@ import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user.UserNotFoundExceptio
 public class LoginServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private static final int cookieMaxAge = 7 * (60 * 60 * 24);
+	private static final int COOKIE_MAX_AGE = 7 * (60 * 60 * 24);
+
 
 	public LoginServlet() {
 		super();
@@ -36,12 +37,12 @@ public class LoginServlet extends HttpServlet {
 			User user = UserLogin.login(email, password);
 
 			Cookie cookie = new Cookie("userId", Encryptor.encrypt(String.valueOf(user.getEmail())));
-			cookie.setMaxAge(cookieMaxAge);
+			cookie.setMaxAge(COOKIE_MAX_AGE);
 
 			req.setAttribute("user", user);
 			resp.addCookie(cookie);
 
-			dispatcher = req.getRequestDispatcher("./home.jsp");
+			dispatcher = req.getRequestDispatcher("/homeServlet");
 		} catch (UserNotFoundException e) {
 			req.setAttribute("result", "notFound");
 			dispatcher = req.getRequestDispatcher("./login.jsp");

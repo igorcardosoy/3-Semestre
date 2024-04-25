@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.Gender;
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.User;
-import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user.Encryptor;
+import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.Encryptor;
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user.UserWriter;
 
 @WebServlet("/userRegister")

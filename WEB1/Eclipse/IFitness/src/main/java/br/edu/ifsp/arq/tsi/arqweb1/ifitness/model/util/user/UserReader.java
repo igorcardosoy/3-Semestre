@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.User;
+import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.Encryptor;
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.LocalDateTypeAdapter;
 
 public final class UserReader {

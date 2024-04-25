@@ -3,6 +3,7 @@ package br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user;
 import java.util.List;
 
 import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.User;
+import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.Encryptor;
 
 public class UserLogin {
 

@@ -1,4 +1,4 @@
-package br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.user;
+package br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

@@ -28,7 +28,7 @@
 	<header class="mb-4">
 		<nav class="navbar navbar-expand-lg bg-body-tertiary">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="login.jsp"> <img class="me-2"
+				<a class="navbar-brand" href="homeServlet"> <img class="me-2"
 					alt="Icone Fit"
 					src="https://cdn-icons-png.flaticon.com/512/2749/2749777.png"
 					width="32" height="32"> IFitness
@@ -107,10 +107,17 @@
 					<div class="mb-2">
 						<button type="submit" class="btn btn-success col-lg-12">Cadastrar</button>
 					</div>
-
+					
 
 				</div>
 			</form>
+			
+			<c:if test="${result == 'registered'}">
+
+				<button type="button" class="btn btn-primary col-lg-4 offset-lg-4"
+                    onclick="window.location.href='homeServlet'">Voltar</button>
+
+			</c:if>
 		</div>
 	</main>
 
