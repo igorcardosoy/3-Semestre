@@ -49,11 +49,8 @@ int main() {
 
 void read_command(char* command, char* parameters[]) {
     
-    do
-    {
-        type_prompt();
-        fgets(command, BUFFER_SIZE, stdin);
-    } while (strcmp(command, " \n") == 0 || strcmp(command, "\n") == 0);
+    type_prompt();
+    fgets(command, BUFFER_SIZE, stdin);
 
     broke_string(command, parameters);
 }
