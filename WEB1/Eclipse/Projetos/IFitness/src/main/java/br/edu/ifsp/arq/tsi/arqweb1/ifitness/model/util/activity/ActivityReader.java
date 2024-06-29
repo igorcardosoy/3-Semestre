@@ -17,7 +17,7 @@ import br.edu.ifsp.arq.tsi.arqweb1.ifitness.model.util.LocalDateTypeAdapter;
 
 public final class ActivityReader {
 
-	public static final String PATH = "/home/igorcardosoy/Documentos/Repositórios/3-Semestre/WEB1/Eclipse/AAAAAAAAA/src/main/webapp/database/activities.json";
+	public static final String PATH = "C:\\Users\\igorf\\OneDrive - ifsp.edu.br\\TSI\\3 - Semestre\\WEB1\\Eclipse\\IFitness\\src\\main\\webapp\\database\\activities.json";
 
 	private ActivityReader() {}
 
