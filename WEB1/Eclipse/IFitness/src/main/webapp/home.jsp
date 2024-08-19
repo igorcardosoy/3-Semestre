@@ -95,7 +95,7 @@
 				<c:otherwise>
 					<table
 						class="table table-dark table-hover align-middle table-bordered text-center">
-						<thead class="table-light">
+						<thead class="table-dark">
 							<tr>
 								<th scope="col">#</th>
 								<th scope="col">Tipo</th>
@@ -148,6 +148,19 @@
 												type="number" maxFractionDigits="1" />
                                             ${formattedMinutes}min
                                            </c:if></td>
+                                           
+                                           <td>
+									<a class="btn" data-bs-toggle="tooltip" data-bs-placement="top" 
+										title="Editar"
+										href="activityRegister?action=update&activity-id=${activity.id}">
+										<img src="images/icons/pencil-square.svg" alt="Editar">
+									</a>
+									<a class="btn" data-bs-toggle="tooltip" data-bs-placement="top" 
+										title="Remover"
+										href="activityRegister?action=delete&activity-id=${activity.id}">
+										<img src="images/icons/trash.svg" alt="Remover">
+									</a>
+								</td>
 							</c:forEach>
 
 						</tbody>

@@ -1,0 +1,18 @@
+class Worker implementes Runnable {
+	public void run() {
+		System.out.println("Oi, mundo!")
+	}
+}
+
+
+public class Hello {
+	public static main(String[] args){
+		Thread t = new Thread(new Worker());
+	}
+
+	try {
+		t.join();
+	} catch (InterruptedException e){
+		e.printStackTrace();
+	}
+}
