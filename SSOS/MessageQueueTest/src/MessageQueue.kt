@@ -10,11 +10,14 @@ class MessageQueue {
     fun publish(message: Message) {
         lock.lock()
         try {
-            val queue = queues.getOrPut(message.topic) {
-                LinkedBlockingQueue(10) // Default value para caso o tópico não exista.
-            }
+            if (!lock.isLocked){
+                // Adiciona a mensagem à fila do tópico.
+                val queue = queues.getOrPut(message.topic) {
+                    LinkedBlockingQueue(10) // Default value para caso o tópico não exista.
+                }
 
-            queue.put(message) // Adiciona a mensagem à fila do tópico.
+                queue.put(message)
+            }
         } finally {
             lock.unlock()
         }
